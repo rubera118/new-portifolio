@@ -117,6 +117,27 @@ export default function HeroSection() {
           animate="show"
           className="w-full max-w-none lg:max-w-[52rem] xl:max-w-[58rem]"
         >
+          <motion.div variants={fadeUp} className="lg:hidden mb-8">
+            <div
+              className="relative w-full max-w-[260px] rounded-3xl overflow-hidden border border-[var(--border2)]"
+              style={{ background: 'var(--bg3)' }}
+            >
+              {!photoLoaded && (
+                <div
+                  className="absolute inset-0 animate-pulse"
+                  style={{ background: 'var(--bg4)' }}
+                />
+              )}
+              <img
+                src={profilePhotoUrl}
+                alt="Uwamwezi Phionah"
+                onLoad={() => setPhotoLoaded(true)}
+                className="w-full h-[300px] object-cover object-top transition-opacity duration-700"
+                style={{ opacity: photoLoaded ? 1 : 0 }}
+              />
+            </div>
+          </motion.div>
+
           {/* Availability chip */}
           <motion.div variants={fadeUp} className="mb-10">
             <span

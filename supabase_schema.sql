@@ -150,24 +150,33 @@ CREATE POLICY "Allow public read visit_counter"
 
 -- contact_messages: insert only for anon; select/update for service role
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow anon insert contact_messages" ON contact_messages;
+DROP POLICY IF EXISTS "Allow service read contact_messages" ON contact_messages;
 CREATE POLICY "Allow anon insert contact_messages"
   ON contact_messages FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow service read contact_messages"
   ON contact_messages FOR SELECT USING (auth.role() = 'service_role');
+GRANT INSERT ON contact_messages TO anon, authenticated;
 
 -- projects: public read; write for service role only
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read projects" ON projects;
+DROP POLICY IF EXISTS "Allow service write projects" ON projects;
 CREATE POLICY "Allow public read projects"
   ON projects FOR SELECT USING (true);
 CREATE POLICY "Allow service write projects"
   ON projects FOR ALL USING (auth.role() = 'service_role');
+GRANT SELECT ON projects TO anon, authenticated;
 
 -- blog_posts: public read published only; service role full access
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read published blog_posts" ON blog_posts;
+DROP POLICY IF EXISTS "Allow service full access blog_posts" ON blog_posts;
 CREATE POLICY "Allow public read published blog_posts"
   ON blog_posts FOR SELECT USING (published = true);
 CREATE POLICY "Allow service full access blog_posts"
   ON blog_posts FOR ALL USING (auth.role() = 'service_role');
+GRANT SELECT ON blog_posts TO anon, authenticated;
 
 
 -- ─── DONE ─────────────────────────────────────────────────────
