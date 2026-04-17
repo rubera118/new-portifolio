@@ -15,9 +15,10 @@ const fadeUp = {
 }
 
 const profilePhotoUrl = `${import.meta.env.BASE_URL}phionah.jpeg`
+const cvUrl = `${import.meta.env.BASE_URL}cv.pdf`
 
 export default function HeroSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [visits, setVisits] = useState<number | null>(null)
   const [photoLoaded, setPhotoLoaded] = useState(false)
 
@@ -27,6 +28,12 @@ export default function HeroSection() {
 
   const roles   = t('hero.roles', { returnObjects: true }) as string[]
   const typeSeq = roles.flatMap(r => [r, 2200]).flat()
+  const lang = i18n.language === 'fr' || i18n.language === 'rw' ? i18n.language : 'en'
+  const miniProof = {
+    en: ['Based in Kigali', 'Open to internships', 'Frontend + full-stack growth'],
+    fr: ['Basée à Kigali', 'Ouverte aux stages', 'Progression frontend + full-stack'],
+    rw: ['Ntuye i Kigali', 'Niteguye internship', 'Ndi gukura muri frontend na full-stack'],
+  }[lang]
 
   return (
     <section
@@ -131,6 +138,14 @@ export default function HeroSection() {
             </span>
           </motion.div>
 
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-2.5 mb-6">
+            {miniProof.map(item => (
+              <span key={item} className="tag">
+                {item}
+              </span>
+            ))}
+          </motion.div>
+
           {/* Main headline */}
           <motion.div variants={fadeUp} className="mb-4 pr-2">
             <h1
@@ -193,6 +208,9 @@ export default function HeroSection() {
             >
               {t('hero.cta_contact')}
             </button>
+            <a href={cvUrl} download className="btn-ghost">
+              CV
+            </a>
           </motion.div>
 
           {/* Socials + visitors */}

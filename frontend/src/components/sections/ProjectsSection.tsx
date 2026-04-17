@@ -9,9 +9,12 @@ const STATIC_PROJECTS: Project[] = [
   {
     id: '1',
     title: 'Urban Bites',
-    description: 'A multi-page responsive restaurant website built with pure HTML & CSS. Problem: showcase a restaurant brand digitally. Solution: mobile-first layout with animated menu, gallery, and reservation flow.',
-    description_fr: 'Site web de restaurant multi-pages responsive en HTML & CSS. Problème: présenter une marque de restaurant en ligne. Solution: layout mobile-first avec menu animé, galerie et système de réservation.',
-    description_rw: 'Urubuga rwa resitora rwakozwe na HTML na CSS. Ikibazo: kwerekana resitora ku mbuga. Igisubizo: layout yubaka mbere kuri terefone ifite menu, galeri no gufata aho.',
+    description:
+      'A responsive restaurant website built with HTML and CSS to present a business professionally online. This project demonstrates layout structure, visual hierarchy, and mobile-first thinking for a real brand scenario.',
+    description_fr:
+      'Un site web responsive de restaurant construit avec HTML et CSS pour présenter une entreprise en ligne de manière professionnelle. Ce projet montre la structure du layout, la hiérarchie visuelle et une approche mobile-first.',
+    description_rw:
+      "Urubuga rwa restaurant rwubatswe na HTML na CSS kugira ngo ubucuruzi bwerekanwe neza online. Uyu mushinga werekana layout nziza, visual hierarchy n'imitekereze ya mobile-first.",
     image_url: '',
     live_url: '#',
     github_url: 'https://github.com/rubera118',
@@ -23,9 +26,12 @@ const STATIC_PROJECTS: Project[] = [
   {
     id: '2',
     title: 'Portfolio v2',
-    description: 'Full-stack personal portfolio with dark/light mode, EN/FR/RW i18n, live visit counter, and contact form. Problem: represent a developer professionally online. Solution: React + FastAPI + Supabase stack with Framer Motion animations.',
-    description_fr: 'Portfolio personnel full-stack avec mode sombre/clair, i18n EN/FR/RW, compteur de visites et formulaire. Solution: React + FastAPI + Supabase avec animations Framer Motion.',
-    description_rw: 'Portfolio yuzuye ifite dark/light mode, EN/FR/RW, gutunga abasura, na formulaire. Igisubizo: React + FastAPI + Supabase hamwe na Framer Motion.',
+    description:
+      'A full-stack portfolio designed to communicate credibility, personality, and technical range. It combines React, FastAPI, Supabase, animation, multilingual support, and deploy-ready structure in one polished product.',
+    description_fr:
+      "Un portfolio full-stack conçu pour communiquer la crédibilité, la personnalité et l'étendue technique. Il combine React, FastAPI, Supabase, animation, support multilingue et structure prête au déploiement.",
+    description_rw:
+      "Portfolio yuzuye yakozwe kugira ngo yerekane credibility, personality n'ubumenyi bwa tekiniki. Ihuza React, FastAPI, Supabase, animation na support y'indimi nyinshi muri product iteguye neza.",
     image_url: '',
     live_url: '#',
     github_url: 'https://github.com/rubera118',
@@ -36,59 +42,71 @@ const STATIC_PROJECTS: Project[] = [
   },
 ]
 
-// Map tech tags to accent colors
 const TAG_COLOR: Record<string, string> = {
-  React:      '#61DAFB',
+  React: '#61DAFB',
   TypeScript: '#3B82F6',
-  HTML5:      '#E34F26',
-  CSS3:       '#1572B6',
-  FastAPI:    '#009688',
-  Supabase:   '#3ECF8E',
-  Tailwind:   '#38BDF8',
+  HTML5: '#E34F26',
+  CSS3: '#1572B6',
+  FastAPI: '#009688',
+  Supabase: '#3ECF8E',
+  Tailwind: '#38BDF8',
   Responsive: '#7C6FFF',
-  'Multi-page':'#00D4AA',
+  'Multi-page': '#00D4AA',
+}
+
+const PROJECT_PROOF: Record<string, { en: string[]; fr: string[]; rw: string[] }> = {
+  'Urban Bites': {
+    en: ['Responsive layout planning', 'Brand-focused visual design', 'Semantic HTML/CSS fundamentals'],
+    fr: ['Planification responsive', 'Design visuel orienté marque', 'Fondamentaux HTML/CSS sémantiques'],
+    rw: ['Gutegura responsive layout', 'Design yibanda kuri brand', 'HTML/CSS zubatswe neza'],
+  },
+  'Portfolio v2': {
+    en: ['Full-stack integration', 'Production-ready deployment thinking', 'Stronger personal positioning'],
+    fr: ['Intégration full-stack', 'Pensée orientée déploiement', 'Meilleur positionnement personnel'],
+    rw: ['Full-stack integration', 'Gutegura deployment', "Kwigaragaza neza nk'umukora software"],
+  },
 }
 
 function ProjectCard({ project, index, lang }: { project: Project; index: number; lang: string }) {
   const { t } = useTranslation()
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const currentLang = lang === 'fr' || lang === 'rw' ? lang : 'en'
 
   const desc =
-    lang === 'fr' && project.description_fr ? project.description_fr :
-    lang === 'rw' && project.description_rw ? project.description_rw :
-    project.description
+    currentLang === 'fr' && project.description_fr
+      ? project.description_fr
+      : currentLang === 'rw' && project.description_rw
+        ? project.description_rw
+        : project.description
+
+  const proof = PROJECT_PROOF[project.title]?.[currentLang] ?? []
 
   return (
     <motion.article
       ref={ref}
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16,1,0.3,1] }}
+      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="group relative card flex flex-col lg:flex-row"
     >
-      {/* ── Image / visual panel ── */}
       <div
         className="relative w-full lg:w-80 lg:flex-shrink-0 h-52 lg:h-auto overflow-hidden"
         style={{
-          background: `radial-gradient(circle at 30% 40%,
-            ${TAG_COLOR[project.tags[0]] ?? '#7C6FFF'}18,
-            transparent 70%),
-            var(--bg4)`
+          background: `radial-gradient(circle at 30% 40%, ${TAG_COLOR[project.tags[0]] ?? '#7C6FFF'}18, transparent 70%), var(--bg4)`,
         }}
       >
-        {/* Project number */}
         <span
           className="absolute top-5 left-5 font-display font-black text-6xl leading-none select-none"
           style={{ color: `${TAG_COLOR[project.tags[0]] ?? '#7C6FFF'}18` }}
         >
           0{index + 1}
         </span>
+
         {project.image_url ? (
           <img
             src={project.image_url}
             alt={project.title}
-            className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100
-                       group-hover:scale-105 transition-all duration-500"
+            className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
           />
         ) : (
           <div className="absolute inset-0 flex items-end p-6">
@@ -105,36 +123,45 @@ function ProjectCard({ project, index, lang }: { project: Project; index: number
             </div>
           </div>
         )}
-        {/* Hover overlay */}
+
         <div className="absolute inset-0 bg-[var(--primary)] opacity-0 group-hover:opacity-[0.05] transition-opacity duration-300" />
       </div>
 
-      {/* ── Content ── */}
       <div className="flex flex-col flex-1 p-7 lg:p-10">
-        {/* Featured pill */}
         {project.featured && (
-          <span className="self-start text-[10px] font-mono font-bold tracking-widest uppercase
-                           px-2.5 py-1 rounded-full mb-4"
+          <span
+            className="self-start text-[10px] font-mono font-bold tracking-widest uppercase px-2.5 py-1 rounded-full mb-4"
             style={{ background: 'var(--secondary-dim)', color: 'var(--secondary)' }}
           >
             Featured
           </span>
         )}
 
-        <h3 className="font-display font-black text-2xl sm:text-3xl tracking-tight mb-3"
-          style={{ color: 'var(--text)' }}>
+        <h3 className="font-display font-black text-2xl sm:text-3xl tracking-tight mb-3" style={{ color: 'var(--text)' }}>
           {project.title}
         </h3>
 
-        <p className="text-sm leading-relaxed mb-6 flex-1"
-          style={{ color: 'var(--text2)' }}>
+        <p className="text-sm leading-relaxed mb-6 flex-1" style={{ color: 'var(--text2)' }}>
           {desc}
         </p>
 
-        {/* Tech stack */}
+        {proof.length > 0 && (
+          <div className="mb-6">
+            <p className="text-[10px] font-mono font-bold tracking-widest uppercase mb-2.5" style={{ color: 'var(--text3)' }}>
+              {currentLang === 'fr' ? 'Ce que cela prouve' : currentLang === 'rw' ? 'Icyo byerekana' : 'What this shows'}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {proof.map(item => (
+                <span key={item} className="tag">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mb-7">
-          <p className="text-[10px] font-mono font-bold tracking-widest uppercase mb-2.5"
-            style={{ color: 'var(--text3)' }}>
+          <p className="text-[10px] font-mono font-bold tracking-widest uppercase mb-2.5" style={{ color: 'var(--text3)' }}>
             Tech Stack
           </p>
           <div className="flex flex-wrap gap-2">
@@ -154,24 +181,15 @@ function ProjectCard({ project, index, lang }: { project: Project; index: number
           </div>
         </div>
 
-        {/* Links */}
         <div className="flex items-center gap-3">
           {project.live_url && project.live_url !== '#' && (
-            <a
-              href={project.live_url}
-              target="_blank" rel="noopener noreferrer"
-              className="btn-primary py-2.5 px-5 text-xs"
-            >
+            <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="btn-primary py-2.5 px-5 text-xs">
               {t('projects.live')}
               <ArrowUpRight size={13} />
             </a>
           )}
           {project.github_url && (
-            <a
-              href={project.github_url}
-              target="_blank" rel="noopener noreferrer"
-              className="btn-ghost py-2.5 px-5 text-xs"
-            >
+            <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="btn-ghost py-2.5 px-5 text-xs">
               <Github size={13} />
               {t('projects.github')}
             </a>
@@ -189,7 +207,9 @@ export default function ProjectsSection() {
 
   useEffect(() => {
     getProjects()
-      .then(d => { if (d.length > 0) setProjects(d) })
+      .then(data => {
+        if (data.length > 0) setProjects(data)
+      })
       .catch(() => {})
   }, [])
 
@@ -200,7 +220,6 @@ export default function ProjectsSection() {
       </div>
 
       <div className="section-wrapper" ref={ref}>
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -208,8 +227,7 @@ export default function ProjectsSection() {
           className="mb-14 max-w-xl"
         >
           <p className="eyebrow">{t('projects.label')}</p>
-          <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight leading-tight mb-4"
-            style={{ color: 'var(--text)' }}>
+          <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight leading-tight mb-4" style={{ color: 'var(--text)' }}>
             {t('projects.title')}
           </h2>
           <p className="text-base" style={{ color: 'var(--text2)' }}>
@@ -217,10 +235,9 @@ export default function ProjectsSection() {
           </p>
         </motion.div>
 
-        {/* Cards */}
         <div className="flex flex-col gap-5">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} lang={i18n.language} />
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} lang={i18n.language} />
           ))}
         </div>
       </div>

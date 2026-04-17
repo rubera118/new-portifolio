@@ -8,15 +8,21 @@ const profilePhotoUrl = `${import.meta.env.BASE_URL}phionah.jpeg`
 const cvUrl = `${import.meta.env.BASE_URL}cv.pdf`
 
 export default function AboutSection() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
   const [imgLoaded, setImgLoaded] = useState(false)
+  const lang = i18n.language === 'fr' || i18n.language === 'rw' ? i18n.language : 'en'
 
   const stats = [
     { num: t('about.stat1_num'), label: t('about.stat1_label'), color: 'var(--primary)' },
     { num: t('about.stat2_num'), label: t('about.stat2_label'), color: 'var(--secondary)' },
     { num: t('about.stat3_num'), label: t('about.stat3_label'), color: 'var(--accent)' },
   ]
+  const strengths = {
+    en: ['Strong eye for clean UI', 'Comfortable presenting work in multiple languages', 'Committed to learning by building real projects'],
+    fr: ['Bon sens du détail pour les interfaces propres', 'À l’aise pour présenter mon travail en plusieurs langues', 'J’apprends en construisant des projets concrets'],
+    rw: ['Mba nitondera UI isukuye kandi yumvikana', 'Nshobora kwerekana akazi kanjye mu ndimi nyinshi', 'Nkura mu bumenyi nkora imishinga nyayo'],
+  }[lang]
 
   return (
     <section id="about" className="relative overflow-hidden" style={{ background: 'var(--bg2)' }}>
@@ -80,6 +86,28 @@ export default function AboutSection() {
                   <span className="text-sm">{text}</span>
                 </div>
               ))}
+            </div>
+
+            <div
+              className="rounded-2xl p-5 mb-10"
+              style={{ background: 'var(--bg3)', border: '1px solid var(--border2)' }}
+            >
+              <p
+                className="text-[10px] font-mono font-bold tracking-widest uppercase mb-3"
+                style={{ color: 'var(--text3)' }}
+              >
+                Strengths
+              </p>
+              <div className="space-y-2.5">
+                {strengths.map(item => (
+                  <div key={item} className="flex items-start gap-2.5">
+                    <span style={{ color: 'var(--secondary)' }}>•</span>
+                    <span className="text-sm" style={{ color: 'var(--text2)' }}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <a href={cvUrl} download className="btn-ghost self-start inline-flex">

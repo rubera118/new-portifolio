@@ -5,6 +5,7 @@ import Footer          from '@/components/layout/Footer'
 import ScrollProgress  from '@/components/ui/ScrollProgress'
 import HeroSection     from '@/components/sections/HeroSection'
 import AboutSection    from '@/components/sections/AboutSection'
+import HighlightsSection from '@/components/sections/HighlightsSection'
 import SkillsSection   from '@/components/sections/SkillsSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import AwardsSection   from '@/components/sections/AwardsSection'
@@ -21,6 +22,7 @@ export default function App() {
         <main>
           <HeroSection />
           <AboutSection />
+          <HighlightsSection />
           <SkillsSection />
           <ProjectsSection />
           <AwardsSection />

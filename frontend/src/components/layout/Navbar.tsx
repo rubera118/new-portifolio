@@ -5,7 +5,7 @@ import { Sun, Moon, Globe, Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import clsx from 'clsx'
 
-const NAV_ITEMS = ['home','about','skills','projects','awards','gallery','blog','contact'] as const
+const NAV_ITEMS = ['home','about','highlights','skills','projects','awards','gallery','blog','contact'] as const
 const LANGS = [
   { code: 'en', label: 'EN', full: 'English',     flag: '🇬🇧' },
   { code: 'fr', label: 'FR', full: 'Français',    flag: '🇫🇷' },
