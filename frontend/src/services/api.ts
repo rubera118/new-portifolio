@@ -77,24 +77,48 @@ export interface VisitCount {
   total_visits: number
 }
 
-export const sendContact = async (payload: ContactPayload) => {
-  await request(
-    `${REST_URL}/contact_messages`,
-    {
-      method: 'POST',
-      headers: { Prefer: 'return=representation' },
-      body: JSON.stringify({
-        name: payload.name,
-        email: payload.email,
-        subject: payload.subject ?? null,
-        message: payload.message,
-      }),
-    },
-  )
+const CONTACT_EMAIL = 'uwaphiona11@gmail.com'
 
-  return {
-    success: true,
-    message: "Your message has been received! I'll get back to you soon.",
+export const buildContactMailto = (payload: ContactPayload) => {
+  const subject = payload.subject?.trim() || `Portfolio message from ${payload.name}`
+  const body = [
+    `Name: ${payload.name}`,
+    `Email: ${payload.email}`,
+    '',
+    payload.message,
+  ].join('\n')
+
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
+
+export const sendContact = async (payload: ContactPayload) => {
+  try {
+    await request(
+      `${REST_URL}/contact_messages`,
+      {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({
+          name: payload.name,
+          email: payload.email,
+          subject: payload.subject ?? null,
+          message: payload.message,
+        }),
+      },
+    )
+
+    return {
+      success: true,
+      fallback: false,
+      message: "Your message has been received! I'll get back to you soon.",
+    }
+  } catch {
+    return {
+      success: true,
+      fallback: true,
+      message: "Direct sending is unavailable right now. Your email app will open with the message filled in.",
+      mailtoUrl: buildContactMailto(payload),
+    }
   }
 }
 

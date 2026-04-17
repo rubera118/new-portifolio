@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Send, Mail, Phone, MapPin, Github, Linkedin, ArrowUpRight } from 'lucide-react'
-import { sendContact, type ContactPayload } from '@/services/api'
+import { buildContactMailto, sendContact, type ContactPayload } from '@/services/api'
 
 export default function ContactSection() {
   const { t } = useTranslation()
@@ -15,15 +15,24 @@ export default function ContactSection() {
 
   const onSubmit = async (data: ContactPayload) => {
     try {
-      await sendContact(data)
-      toast.success(t('contact.success'), {
+      const result = await sendContact(data)
+
+      if (result.fallback && result.mailtoUrl) {
+        window.location.href = result.mailtoUrl
+      }
+
+      toast.success(result.fallback ? result.message : t('contact.success'), {
         style: { background: 'var(--bg3)', color: 'var(--text)', border: '1px solid var(--border)' },
         iconTheme: { primary: 'var(--secondary)', secondary: 'white' },
       })
       reset()
     } catch {
-      toast.error(t('contact.error'), {
-        style: { background: 'var(--bg3)', color: 'var(--text)', border: '1px solid #ff6b9d44' },
+      const mailtoUrl = buildContactMailto(data)
+      window.location.href = mailtoUrl
+
+      toast.success('Email app opened as a fallback. You can send the message from there.', {
+        style: { background: 'var(--bg3)', color: 'var(--text)', border: '1px solid var(--border)' },
+        iconTheme: { primary: 'var(--secondary)', secondary: 'white' },
       })
     }
   }
