@@ -14,6 +14,8 @@ const fadeUp = {
   show:   { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
 }
 
+const profilePhotoUrl = `${import.meta.env.BASE_URL}phionah.jpeg`
+
 export default function HeroSection() {
   const { t } = useTranslation()
   const [visits, setVisits] = useState<number | null>(null)
@@ -85,7 +87,7 @@ export default function HeroSection() {
           )}
 
           <img
-            src="/phionah.jpeg"
+            src={profilePhotoUrl}
             alt="Uwamwezi Phionah"
             onLoad={() => setPhotoLoaded(true)}
             className="relative w-full object-cover object-top transition-opacity duration-700"

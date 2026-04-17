@@ -4,6 +4,9 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Download, MapPin, Zap, Code2 } from 'lucide-react'
 
+const profilePhotoUrl = `${import.meta.env.BASE_URL}phionah.jpeg`
+const cvUrl = `${import.meta.env.BASE_URL}cv.pdf`
+
 export default function AboutSection() {
   const { t } = useTranslation()
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -79,7 +82,7 @@ export default function AboutSection() {
               ))}
             </div>
 
-            <a href="/cv.pdf" download className="btn-ghost self-start inline-flex">
+            <a href={cvUrl} download className="btn-ghost self-start inline-flex">
               <Download size={14} />
               {t('about.download_cv')}
             </a>
@@ -117,7 +120,7 @@ export default function AboutSection() {
                     />
                   )}
                   <img
-                    src="/phionah.jpeg"
+                    src={profilePhotoUrl}
                     alt="Uwamwezi Phionah"
                     onLoad={() => setImgLoaded(true)}
                     className="w-full h-full object-cover object-top transition-opacity duration-500"
